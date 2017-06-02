@@ -4,7 +4,8 @@
 
   <test name="Basic" preserve-order="true">
     <classes>      
-      <class name="com.maga.jreportnginteg.basic.BasicTestFailure"/>
+      <class name="com.maga.jreportnginteg.basic.HelloWorldTest"/>
+      <class name="com.maga.jreportnginteg.basic.BasicFailureTest"/>
     </classes>
   </test>
 
