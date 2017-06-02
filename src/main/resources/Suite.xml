@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="MySuite" parallel="false" preserve-order="true" time-out="5000">
+
+  <test name="Basic" preserve-order="true">
+    <classes>      
+      <class name="com.maga.jreportnginteg.basic.BasicTestFailure"/>
+    </classes>
+  </test>
+
+  <test name="LoggerType" preserve-order="true">
+    <classes>      
+      <class name="com.maga.jreportnginteg.loggertype.InstanceLoggerTest"/>
+      <class name="com.maga.jreportnginteg.loggertype.StaticLoggerInjectionTest"/>
+      <class name="com.maga.jreportnginteg.loggertype.LoggerFactoryTest"/>            
+    </classes>
+  </test>
+
+  <test name="Misc" preserve-order="true">
+    <classes>
+      <class name="com.maga.jreportnginteg.misc.LogLevelTest"/>
+    </classes>
+  </test>
+
+</suite>

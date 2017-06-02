@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <groupId>com.maga</groupId>
+   <artifactId>jreportng-integ</artifactId>
+   <version>1.0-SNAPSHOT</version>
+   <packaging>jar</packaging>
+
+   <name>LearnReportNG</name>
+   <url>http://maven.apache.org</url>
+
+   <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>      
+   </properties>
+
+   <dependencies>
+      <dependency>
+         <groupId>org.testng</groupId>
+         <artifactId>testng</artifactId>
+         <version>6.11</version>
+         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>com.github.cafeduke</groupId>
+         <artifactId>jreportng</artifactId>
+         <version>1.2</version>
+         <scope>compile</scope>
+      </dependency>
+      
+   </dependencies>
+
+   <build>
+      <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
+
+      <plugins>
+      
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.20</version>
+            <configuration>
+               <skipTests>true</skipTests>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.20</version>
+
+            <configuration>
+               <reportsDirectory>target/jreportng</reportsDirectory>
+               
+               <systemPropertyVariables>
+                  <jreport.org.prefix>com.maga</jreport.org.prefix>
+                  <jreport.title>Integration Test for JReportNG</jreport.title>
+               </systemPropertyVariables>               
+               
+               <properties>
+                  <property>
+                     <name>usedefaultlisteners</name>
+                     <value>false</value>
+                  </property>
+                  <property>
+                     <name>listener</name>
+                     <value>com.github.cafeduke.jreportng.TestListener,org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter</value>
+                  </property>
+               </properties>
+               
+               <suiteXmlFiles>
+                  <suiteXmlFile>src/main/resources/Suite.xml</suiteXmlFile>
+               </suiteXmlFiles>               
+            </configuration>
+
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>integration-test</goal>
+                  </goals>
+               </execution>
+            </executions>
+
+         </plugin>
+      </plugins>
+   </build>
+</project>
