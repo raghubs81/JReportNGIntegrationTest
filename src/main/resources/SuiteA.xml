@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="SuiteA" preserve-order="true">
+
+  <parameter name = "id" value="1"/>
+
+  <test name="packA" preserve-order="true">
+    <classes>
+      <class name="com.maga.jreportnginteg.packA.ClassA1" />
+      <class name="com.maga.jreportnginteg.packA.ClassA2" />
+    </classes>
+  </test>
+
+</suite>

@@ -1,0 +1,100 @@
+<project name="JReportNGIntegrationTest" default="all" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <target name="all">
+    <antcall target="clean" />
+    <antcall target="test" />
+  </target>
+
+  <target name="clean" depends="properties">
+    <delete dir="classes" />
+    <delete>
+      <fileset dir="${basedir}" includes="*.dif,*.suc,*.log" />
+    </delete>
+  </target>
+
+  <target name="cleanall" depends="clean">
+    <delete dir="${dir.lib}" />
+  </target>
+
+  <target name="test" depends="compile">
+    <testng 
+      classpathref="classpath.testsource"
+      workingDir="${dir.work}"
+      outputdir="${dir.work}/parallel"
+      suiteThreadPoolSize="2"
+      listeners="com.maga.jreportnginteg.common.TestListener,com.github.cafeduke.jreportng.TestListener,org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter"
+      useDefaultListeners="false" 
+      haltonfailure="true">
+      <sysproperty key="jreport.home" value="${dir.work}/parallel" />
+      <sysproperty key="jreport.org.prefix" value="com.maga" />
+      <sysproperty key="jreport.title" value="Parallel Test for JReportNG" />
+      <xmlfileset dir="${dir.resources}" includes="SuiteA.xml,SuiteB.xml"/>
+    </testng>
+  </target>
+
+  <target name="compile" depends="setup">
+    <javac srcdir="${dir.source}" destdir="${dir.classes}" includes="**/*.java" classpathref="classpath.testsource" />
+  </target>
+
+  <target name="setup" depends="properties">
+    <bootstrap />
+    <manage-dependency />
+
+    <!-- Classpath for test source -->
+    <path id="classpath.testsource">
+      <pathelement location="${dir.classes}" />
+      <fileset dir="${dir.lib.project}" includes="**/*.jar" />
+    </path>    
+    
+    <taskdef resource="testngtasks" classpathref="classpath.testsource" />
+    
+  </target>
+
+  <target name="properties">
+
+    <property name="dir.source" value="${basedir}/src/main/java" />
+    <property name="dir.classes" value="${basedir}/classes" />
+    <property name="dir.resources" value="${basedir}/src/main/resources" />
+    <property name="dir.lib" value="${basedir}/lib" />
+    <property name="dir.lib.antplugin" value="${dir.lib}/ant-plugin" />
+    <property name="dir.lib.project" value="${dir.lib}/project" />
+    <property name="dir.work" value="${basedir}/work" />
+
+    <mkdir dir="${dir.classes}" />
+    <mkdir dir="${dir.work}" />
+    <mkdir dir="${dir.lib.antplugin}" />
+    <mkdir dir="${dir.lib.project}" />
+    
+    <!-- Set default properties --> 
+  </target>
+
+  <!--
+    Download core jars that are required to define ant tasks
+    -->
+  <macrodef name="bootstrap">
+    <sequential>
+      <!--  Define boostrap jars -->
+      <property name="bootstrap.jar.ivy" value="${dir.lib}/ant-plugin/ivy-2.4.0.jar" />
+      <property name="bootstrap.jar.ant-contrib" value="${dir.lib}/ant-plugin/ant-contrib-1.0b3.jar" />
+
+      <!--  Get Bootstrap JARs -->
+      <get dest="${bootstrap.jar.ivy}" src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/2.5.0/ivy-2.5.0.jar" skipexisting="true" />
+      <get dest="${bootstrap.jar.ant-contrib}" src="https://repo1.maven.org/maven2/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" skipexisting="true" />
+
+      <!--  Define bootstrap tasks -->
+      <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${bootstrap.jar.ivy}" />
+      <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${bootstrap.jar.ant-contrib}" />      
+    </sequential>
+  </macrodef>
+
+  <!--
+    Download project jars and dependent jars using ivy
+    -->
+  <macrodef name="manage-dependency">
+    <sequential>
+      <ivy:retrieve pattern="${dir.lib.project}/[organisation]-[artifact]-[revision].[ext]" type="jar,bundle" log="quiet" />
+      <ivy:report conf="all" todir="${dir.work}"/>
+    </sequential>
+  </macrodef>
+
+</project>

@@ -1,11 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="MySuite" parallel="false" preserve-order="true" time-out="5000">
+<suite name="SuiteCore" parallel="false" preserve-order="true" time-out="5000">
 
   <test name="Basic" preserve-order="true">
     <classes>      
       <class name="com.maga.jreportnginteg.basic.HelloWorldTest"/>
       <class name="com.maga.jreportnginteg.basic.BasicFailureTest"/>
+      <class name="com.maga.jreportnginteg.basic.BeforeClassFailureTest"/>
+      <class name="com.maga.jreportnginteg.basic.AfterClassFailureTest"/>
     </classes>
   </test>
 

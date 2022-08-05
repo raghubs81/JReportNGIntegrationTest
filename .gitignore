@@ -1,0 +1,6 @@
+/bin/
+/classes/
+/target/
+/test-output/
+.settings/
+lib/
